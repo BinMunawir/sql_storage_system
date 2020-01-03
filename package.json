@@ -1,0 +1,20 @@
+{
+  "name": "sql_storage_system",
+  "version": "0.0.1",
+  "description": "this library helps to encapsulate sql CRUD operations via nodejs",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bu3abed/sql_storage_system.git"
+  },
+  "author": "Abdullah Munawer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bu3abed/sql_storage_system/issues"
+  },
+  "homepage": "https://github.com/bu3abed/sql_storage_system#readme",
+  "devDependencies": {
+    "typescript": "^3.7.4"
+  }
+}
