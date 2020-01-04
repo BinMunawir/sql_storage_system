@@ -1,5 +1,4 @@
-function createStm(table: string, data: any) {
-
+export function generateCreateStm(table: string, data: any) {
     let keys: any[] = [];
     let values: any[] = [];
     Object.keys(data).forEach((key) => {
@@ -12,7 +11,7 @@ function createStm(table: string, data: any) {
     return "INSERT INTO " + table + " (" + sparateByComma(keys) + ") VALUES (" + sparateByComma(values) + ");"
 }
 
-function readStm(table: string, query: any) {
+export function generateReadStm(table: string, query: any) {
 
     let filters: any = {};
     let keys: any[] = [];
@@ -31,7 +30,7 @@ function readStm(table: string, query: any) {
     return "SELECT * FROM " + table + " WHERE " + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
 }
 
-function updateStm(table: string, data: any, query: any) {
+export function generateUpdateStm(table: string, data: any, query: any) {
     let keys: any[] = [];
     let values: any[] = [];
     Object.keys(data).forEach((key) => {
@@ -51,7 +50,7 @@ function updateStm(table: string, data: any, query: any) {
     return "UPDATE " + table + " SET " + combineByEqual(keys, values) + " WHERE " + sparateByAnd(combineByEqual(keys2, values2)) + ";"
 }
 
-function deleteStm(table: string, query: any) {
+export function generateDeleteStm(table: string, query: any) {
     let keys: any[] = [];
     let values: any[] = [];
     Object.keys(query).forEach((key) => {
@@ -60,16 +59,17 @@ function deleteStm(table: string, query: any) {
             query[key] = "'" + query[key] + "'";
         values.push(query[key]);
     })
-    return "DELETE FROM " + table + " WHERE " + sparateByAnd(combineByEqual(keys, values)) + ";"
+    return "DELETE FROM " + table + " WHERE " + sparateByAnd(combineByEqual(keys, values)); + ";"
 }
 
 function applyFilters(filters: any) {
     let filter = '';
-    filter += ('LIMIT ' + filters['limit'] || 20)
+    filters['limit'] = filters['limit'] ? filters['limit'] : 20;
+    filter += ('LIMIT ' + filters['limit'])
     if (filters['page'])
-        filter += ((' OFFSET ' + filters['page']))
+        filter += (' OFFSET ' + (filters['page'] * filters['limit']))
     if (filters['sort']) {
-        filter += (' ORDER BY ' + filters['sort'] + ' ' + filters['order'] || 'DESC')
+        filter += (' ORDER BY ' + filters['sort'] + ' ' + (filters['order'] ? filters['order'] : 'DESC'))
     }
     return filter;
 }
@@ -83,6 +83,7 @@ function sparateByAnd(array: any[]) {
             result += ' && ';
         result += (array[i])
     }
+    return result;
 }
 function combineByEqual(array1: any[], array2: any[]) {
     let result: any[] = [];
@@ -90,12 +91,4 @@ function combineByEqual(array1: any[], array2: any[]) {
         result.push((array1[i] + '=' + array2[i]))
     }
     return result;
-}
-
-
-export default {
-    createStm,
-    readStm,
-    updateStm,
-    deleteStm,
 }
