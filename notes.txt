@@ -1,0 +1,2 @@
+1: the sql table schema should not have any of these key words
+    [limit, page, sort, order]
