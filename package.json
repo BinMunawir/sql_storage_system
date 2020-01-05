@@ -1,7 +1,7 @@
 {
   "name": "sql_storage_system",
   "version": "0.0.1",
-  "description": "this library helps to encapsulate sql CRUD operations via nodejs",
+  "description": "this library helps to encapsulate sql CRUD operations via typescript",
   "main": "index.js",
   "scripts": {
     "deploy": "tsc src/index.ts --outDir dist/ && node dist/index.js",

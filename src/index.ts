@@ -2,7 +2,7 @@
 
 import sqlFacade from "./facade";
 
-async function test() {
+export async function test() {
     await sqlFacade.sqlSetup('localhost', 'root', '123456789', 'x');
     let r;
     r = await sqlFacade.sqlRead('Users')
@@ -18,4 +18,4 @@ async function test() {
     console.log(r);
 }
 
-test()
+// test()
