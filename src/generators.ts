@@ -16,18 +16,18 @@ export function generateReadStm(table: string, query: any) {
     let filters: any = {};
     let keys: any[] = [];
     let values: any[] = [];
-    Object.keys(query).forEach((key) => {
-        if (key == 'limit' || key == 'page' || key == 'sort' || key == 'order') {
-            filters[key] = query[key];
-            return;
-        }
-        keys.push(key);
-        if (typeof query[key] == 'string')
-            query[key] = "'" + query[key] + "'";
-        values.push(query[key]);
-    })
-
-    return "SELECT * FROM " + table + " WHERE " + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
+    if (query != null)
+        Object.keys(query).forEach((key) => {
+            if (key == 'limit' || key == 'page' || key == 'sort' || key == 'order') {
+                filters[key] = query[key];
+                return;
+            }
+            keys.push(key);
+            if (typeof query[key] == 'string')
+                query[key] = "'" + query[key] + "'";
+            values.push(query[key]);
+        })
+    return "SELECT * FROM " + table + " " + (query != null ? "WHERE" : "") + " " + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
 }
 
 export function generateUpdateStm(table: string, data: any, query: any) {

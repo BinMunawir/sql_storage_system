@@ -4,7 +4,7 @@ var mysql = require('mysql');
 
 let db: any;
 
-export function sqlConnect(host: string, user: string, password: string, database: string) {
+export async function executeConnect(host: string, user: string, password: string, database: string) {
     var connection = mysql.createConnection({
         host: host,
         user: user,
@@ -21,7 +21,7 @@ export function sqlConnect(host: string, user: string, password: string, databas
 }
 
 
-export async function sqlCreat(sql: any) {
+export async function executeCreate(sql: any) {
     try {
         await sqlExcecute(sql);
     } catch (e) {
@@ -30,7 +30,7 @@ export async function sqlCreat(sql: any) {
         throw new InternalError('error: ' + e.sqlMessage)
     }
 }
-export async function sqlRead(sql: any) {
+export async function executeRead(sql: any) {
     let result: any;
     try {
         result = await sqlExcecute(sql);
@@ -39,14 +39,14 @@ export async function sqlRead(sql: any) {
     }
     return prapareResult(result);
 }
-export async function sqlUpdate(sql: any) {
+export async function executeUpdate(sql: any) {
     try {
         await sqlExcecute(sql)
     } catch (e) {
         console.log('error happend with update')
     }
 }
-export async function sqlDelete(sql: any) {
+export async function executeDelete(sql: any) {
     try {
         await sqlExcecute(sql)
     } catch (e) {
