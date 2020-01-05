@@ -1,5 +1,7 @@
 
-// import * as g from './tests/generators.test';
+import * as g from './tests/generators.test';
+import * as s from './tests/api.test';
 
-// g.test();
+
+s.test();
 

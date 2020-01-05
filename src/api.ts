@@ -1,8 +1,10 @@
+import { ClientError, InternalError } from "./errors";
+
 var mysql = require('mysql');
 
 let db: any;
 
-export function connect(host: string, user: string, password: string, database: string) {
+export function sqlConnect(host: string, user: string, password: string, database: string) {
     var connection = mysql.createConnection({
         host: host,
         user: user,
@@ -12,8 +14,8 @@ export function connect(host: string, user: string, password: string, database: 
 
     connection.connect(function (err: any) {
         if (err)
-            throw 'error connecting: ' + err.stack;
-        console.log('connected as id ' + connection.threadId);
+            throw 'error connecting ';
+        console.log('DB connected  ');
     });
     db = connection;
 }
@@ -21,9 +23,11 @@ export function connect(host: string, user: string, password: string, database: 
 
 export async function sqlCreat(sql: any) {
     try {
-        await sqlExcecute(sql)
+        await sqlExcecute(sql);
     } catch (e) {
-        console.log('error happend with create')
+        if (e.sqlMessage.includes('Duplicate entry'))
+            throw new ClientError(101, 'error: the data already exist in the db');
+        throw new InternalError('error: ' + e.sqlMessage)
     }
 }
 export async function sqlRead(sql: any) {
@@ -33,7 +37,7 @@ export async function sqlRead(sql: any) {
     } catch (e) {
         console.log('error happend with read')
     }
-    result;
+    return prapareResult(result);
 }
 export async function sqlUpdate(sql: any) {
     try {
@@ -51,10 +55,10 @@ export async function sqlDelete(sql: any) {
 }
 
 
-function prapareResult(data: any[]) {
+function prapareResult(data: any) {
     let newData: any[] = [];
-    data.forEach(e => {
-
+    data.forEach((e: any, i: any) => {
+        newData.push(JSON.parse(JSON.stringify(e)))
     });
     return newData;
 }
@@ -62,10 +66,12 @@ async function sqlExcecute(sql: string) {
     let r: any;
     await new Promise((resolve, reject) => {
         db.query(sql, (err: any, result: any) => {
-            if (err) throw err;
-            console.log(err);
-            r = result;
-            resolve();
+            if (err) reject(err);
+            else {
+                // console.log(result);
+                r = result;
+                resolve()
+            }
         })
     });
     return r;
