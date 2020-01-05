@@ -1,5 +1,5 @@
 
-import * as g from './tests/generators.test';
+// import * as g from './tests/generators.test';
 
-g.test();
+// g.test();
 
