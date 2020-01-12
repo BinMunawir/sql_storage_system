@@ -1,8 +1,8 @@
 import { executeConnect, executeCreate, executeUpdate, executeDelete, executeRead } from './api';
 import { generateCreateStm, generateReadStm, generateUpdateStm, generateDeleteStm } from './generators';
 
-async function sqlSetup(host: string, user: string, password: string, database: string) {
-    executeConnect(host, user, password, database);
+async function sqlSetup(host: string, user: string, password: string, database: string, tables: string) {
+    await executeConnect(host, user, password, database, tables);
 }
 
 async function sqlCreate(table: string, data: any): Promise<void> {

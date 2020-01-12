@@ -2,12 +2,33 @@
 
 import sqlFacade from "./facade";
 
+let tables = `
+CREATE TABLE Users (
+    userID		            VARCHAR(255)          NOT NULL,
+    password	        	VARCHAR(255)	    NOT NULL,
+    fName	        		VARCHAR(50)	    , 
+    lName	        		VARCHAR(50)	    , 
+    phone	VARCHAR(50),
+    email   VARCHAR(100),
+    birthDate	        		INT	    , 
+    gender	        		INT	    , 
+    nationality	        		VARCHAR(50)	    , 
+    address	        		VARCHAR(200)	    , 
+    avatar	        		VARCHAR(255)	    , 
+    PRIMARY KEY (userID)
+);
+CREATE TABLE Notes (
+    userID		            VARCHAR(255)          NOT NULL,
+    noteID		            VARCHAR(255)          NOT NULL,
+    title	        		VARCHAR(50)	    , 
+    content	        		VARCHAR(255)	    , 
+    date	        		INT	    , 
+    PRIMARY KEY (userID, noteID),
+    FOREIGN KEY (userID) REFERENCES Users (userID)
+);
+`;
 export async function test() {
-    try {
-        await sqlFacade.sqlSetup('localhost', 'root', '123456789', 'x');
-    } catch (e) {
-        console.log(44);
-    }
+    await sqlFacade.sqlSetup('localhost', 'root', '123456789', 'x', tables);
     // let r;
     // r = await sqlFacade.sqlRead('Users')
     // console.log(r);
