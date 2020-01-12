@@ -11,11 +11,15 @@ export async function executeConnect(host: string, user: string, password: strin
         password: password,
         database: database,
     });
-
-    connection.connect(function (err: any) {
-        if (err)
-            throw 'error connecting ';
-        console.log('DB connected  ');
+    await new Promise((resolve, reject) => {
+        connection.connect(function (err: any) {
+            if (err)
+                reject(new Error('DB connection failed ' + err.message))
+            else {
+                console.log('DB connected');
+                resolve()
+            }
+        });
     });
     db = connection;
 }
