@@ -134,7 +134,15 @@ export async function executeDelete(sql: any) {
         console.log('error happend with delete')
     }
 }
-
+export async function executeCustom(sql: string) {
+    let result: any;
+    result = await sqlExcecute(sql);
+    try {
+    } catch (e) {
+        console.log('error happend with custom')
+    }
+    return prapareResult(result);
+}
 
 function prapareResult(data: any) {
     let newData: any[] = [];

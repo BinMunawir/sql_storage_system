@@ -26,10 +26,16 @@ async function sqlDelete(table: string, query: any): Promise<void> {
     await executeDelete(sql)
 }
 
+async function sqlCustom(sql: string): Promise<any> {
+    let result = await executeRead(sql)
+    return result;
+}
+
 export default {
     sqlSetup,
     sqlCreate,
     sqlRead,
     sqlUpdate,
     sqlDelete,
+    sqlCustom,
 }
