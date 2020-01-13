@@ -8,7 +8,8 @@ let dbuser: string;
 let dbpassword: string;
 let dbdatabase: string;
 
-export async function executeConnect(host: string, user: string, password: string, database: string, tables: string) {
+export async function executeConnect(host: string = dbhost, user: string = dbuser,
+    password: string = dbpassword, database: string = dbdatabase, tables: string = '') {
 
     dbhost = host;
     dbuser = user;
@@ -40,6 +41,17 @@ export async function executeConnect(host: string, user: string, password: strin
         });
     });
 
+    connection.on('error', function (err: any) {
+        console.log(99, 'error from excecuteConnect ', 99);
+        console.log('db error', err);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ECONNRESET') {
+            executeConnect();
+        } else {
+            throw err;
+            console.log(2);
+
+        }
+    });
 
     async function initDB(host: string, user: string, password: string, database: string, tables: string) {
         var connection = mysql.createConnection({
@@ -152,6 +164,23 @@ function prapareResult(data: any) {
     return newData;
 }
 async function sqlExcecute(sql: string) {
+
+    let r: any;
+    await new Promise((resolve, reject) => {
+        db.query(sql, (err: any, result: any) => {
+            if (err) reject(err);
+            else {
+                // console.log(result);
+                r = result;
+                // db.end();
+                resolve()
+            }
+        })
+    });
+    return r;
+}
+
+async function reconnect() {
     await new Promise(async (resolve, reject) => {
         db = mysql.createConnection({
             host: dbhost,
@@ -164,20 +193,5 @@ async function sqlExcecute(sql: string) {
             else resolve()
         })
     })
-
-    let r: any;
-    await new Promise((resolve, reject) => {
-        db.query(sql, (err: any, result: any) => {
-            if (err) reject(err);
-            else {
-                // console.log(result);
-                r = result;
-                db.end();
-                resolve()
-            }
-        })
-    });
-    return r;
 }
-
 
