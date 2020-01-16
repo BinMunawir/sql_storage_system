@@ -1,6 +1,6 @@
 {
   "name": "sql_storage_system",
-  "version": "0.0.28",
+  "version": "0.0.32",
   "description": "this library helps to encapsulate sql CRUD operations via typescript",
   "main": "dist/index.js",
   "scripts": {

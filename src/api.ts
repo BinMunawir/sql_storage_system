@@ -35,20 +35,17 @@ export async function executeConnect(host: string = dbhost, user: string = dbuse
             else {
                 console.log('DB connected');
                 db = connection;
-                // db.end()
                 resolve();
             }
         });
     });
 
     connection.on('error', function (err: any) {
-        console.log(99, 'error from excecuteConnect ', 99);
         console.log('db error', err);
         if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ECONNRESET') {
             executeConnect();
         } else {
             throw err;
-            console.log(2);
 
         }
     });
@@ -115,44 +112,22 @@ export async function executeConnect(host: string = dbhost, user: string = dbuse
 
 
 export async function executeCreate(sql: any) {
-    try {
-        await sqlExcecute(sql);
-    } catch (e) {
-        if (e.sqlMessage.includes('Duplicate entry'))
-            throw new ClientError(101, 'error: the data already exist in the db');
-        throw new InternalError('error: ' + e.sqlMessage)
-    }
+    await sqlExcecute(sql);
 }
 export async function executeRead(sql: any) {
     let result: any;
     result = await sqlExcecute(sql);
-    try {
-    } catch (e) {
-        console.log('error happend with read')
-    }
     return prapareResult(result);
 }
 export async function executeUpdate(sql: any) {
-    try {
-        await sqlExcecute(sql)
-    } catch (e) {
-        console.log('error happend with update')
-    }
+    await sqlExcecute(sql)
 }
 export async function executeDelete(sql: any) {
-    try {
-        await sqlExcecute(sql)
-    } catch (e) {
-        console.log('error happend with delete')
-    }
+    await sqlExcecute(sql)
 }
 export async function executeCustom(sql: string) {
     let result: any;
     result = await sqlExcecute(sql);
-    try {
-    } catch (e) {
-        console.log('error happend with custom')
-    }
     return prapareResult(result);
 }
 
@@ -165,14 +140,13 @@ function prapareResult(data: any) {
 }
 async function sqlExcecute(sql: string) {
 
+    console.log(sql);
     let r: any;
     await new Promise((resolve, reject) => {
         db.query(sql, (err: any, result: any) => {
             if (err) reject(err);
             else {
-                // console.log(result);
                 r = result;
-                // db.end();
                 resolve()
             }
         })
@@ -180,18 +154,4 @@ async function sqlExcecute(sql: string) {
     return r;
 }
 
-async function reconnect() {
-    await new Promise(async (resolve, reject) => {
-        db = mysql.createConnection({
-            host: dbhost,
-            user: dbuser,
-            password: dbpassword,
-            database: dbdatabase,
-        });
-        db.connect((e: any) => {
-            if (e) reject('db not connected ' + e.message);
-            else resolve()
-        })
-    })
-}
 

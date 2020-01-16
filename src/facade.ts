@@ -16,7 +16,7 @@ export async function sqlRead(table: string, query: any = null): Promise<any> {
     return result;
 }
 
-export async function sqlUpdate(table: string, data: any, query: any): Promise<void> {
+export async function sqlUpdate(table: string, query: any, data: any): Promise<void> {
     let sql = generateUpdateStm(table, data, query);
     await executeUpdate(sql)
 }

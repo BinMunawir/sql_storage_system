@@ -27,7 +27,7 @@ export function generateReadStm(table: string, query: any) {
                 query[key] = "'" + query[key] + "'";
             values.push(query[key]);
         })
-    return "SELECT * FROM " + table + " " + (keys.length > 0 ? "WHERE" : "") + " " + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
+    return "SELECT * FROM " + table + (keys.length > 0 ? " WHERE " : "") + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
 }
 
 export function generateUpdateStm(table: string, data: any, query: any) {
@@ -64,13 +64,13 @@ export function generateDeleteStm(table: string, query: any) {
 
 function applyFilters(filters: any) {
     let filter = '';
+    if (filters['sort']) {
+        filter += ('ORDER BY ' + filters['sort'] + ' ' + (filters['order'] ? filters['order'] + ' ' : ''))
+    }
     filters['limit'] = filters['limit'] ? filters['limit'] : 20;
     filter += ('LIMIT ' + filters['limit'])
     if (filters['page'])
         filter += (' OFFSET ' + (filters['page'] * filters['limit']))
-    if (filters['sort']) {
-        filter += (' ORDER BY ' + filters['sort'] + ' ' + (filters['order'] ? filters['order'] : 'DESC'))
-    }
     return filter;
 }
 function sparateByComma(array: any[]) {
