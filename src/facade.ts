@@ -10,8 +10,10 @@ export async function sqlCreate(table: string, data: any): Promise<void> {
     await executeCreate(sql)
 }
 
-export async function sqlRead(table: string, query: any = null): Promise<any> {
-    let sql = generateReadStm(table, query);
+export async function sqlRead(table: string, query: any = null, requestedData: any = []): Promise<any> {
+    let sql = generateReadStm(table, query, requestedData);
+    console.log(99, sql);
+
     let result = await executeRead(sql)
     return result;
 }

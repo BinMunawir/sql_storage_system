@@ -11,8 +11,7 @@ export function generateCreateStm(table: string, data: any) {
     return "INSERT INTO " + table + " (" + sparateByComma(keys) + ") VALUES (" + sparateByComma(values) + ");"
 }
 
-export function generateReadStm(table: string, query: any) {
-
+export function generateReadStm(table: string, query: any, requestedData: any) {
     let filters: any = {};
     let keys: any[] = [];
     let values: any[] = [];
@@ -27,7 +26,7 @@ export function generateReadStm(table: string, query: any) {
                 query[key] = "'" + query[key] + "'";
             values.push(query[key]);
         })
-    return "SELECT * FROM " + table + (keys.length > 0 ? " WHERE " : "") + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
+    return "SELECT " + (requestedData.length > 0 ? requestedData.toString() : '*') + " FROM " + table + (keys.length > 0 ? " WHERE " : "") + sparateByAnd(combineByEqual(keys, values)) + " " + applyFilters(filters) + ";"
 }
 
 export function generateUpdateStm(table: string, data: any, query: any) {

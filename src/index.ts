@@ -5,8 +5,8 @@ export * from "./facade";
 // async function test() {
 //     await sqlSetup('localhost', 'root', '123456789', 'x', '');
 //     let r;
-    // r = await sqlRead('Users')
-    // console.log(r);
+//     r = await sqlRead('Users')
+//     console.log(r);
     // await sqlCreate('Users', { userID: '5', password: '5' });
     // r = await sqlRead('Users', { userID: '5' })
     // console.log(r);
@@ -17,5 +17,4 @@ export * from "./facade";
     // r = await sqlRead('Users')
     // console.log(r);
 // }
-
 // test()
