@@ -140,12 +140,12 @@ function prapareResult(data: any) {
 }
 async function sqlExcecute(sql: string) {
 
-    console.log(sql);
     let r: any;
     await new Promise((resolve, reject) => {
         db.query(sql, (err: any, result: any) => {
             if (err) reject(err);
             else {
+                console.log(sql);
                 r = result;
                 resolve()
             }

@@ -12,8 +12,6 @@ export async function sqlCreate(table: string, data: any): Promise<void> {
 
 export async function sqlRead(table: string, query: any = null, requestedData: any = []): Promise<any> {
     let sql = generateReadStm(table, query, requestedData);
-    console.log(99, sql);
-
     let result = await executeRead(sql)
     return result;
 }
